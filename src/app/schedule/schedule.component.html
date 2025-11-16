@@ -1,0 +1,29 @@
+<div class="schedule-container">
+  <h2>Your Personalized Schedule</h2>
+  <p class="subtitle">Here is your optimized study plan based on your inputs.</p>
+
+  <!-- Loading / Waiting Animation -->
+  <div *ngIf="isLoading" class="loading-wrapper">
+    <div class="spinner"></div>
+    <p>Generating your schedule... Please wait</p>
+  </div>
+
+  <!-- Empty schedule message -->
+  <div *ngIf="!isLoading && isScheduleEmpty()">
+    <p>No schedule available. Please generate your schedule first.</p>
+  </div>
+
+  <!-- Final Generated Schedule -->
+  <div *ngIf="!isLoading && !isScheduleEmpty()" class="schedule-grid">
+    <ng-container *ngFor="let day of days">
+      <div *ngIf="formattedSchedule[day]" class="day-card">
+        <h3>{{ day }}</h3>
+
+        <div *ngFor="let time of getTimes(day)" class="time-block">
+          <span class="time">{{ time }}</span>
+          <span class="subject">{{ getActivity(day, time) }}</span>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
