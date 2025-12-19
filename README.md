@@ -1,7 +1,23 @@
 # ScheduleGen
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.10.
+FROM node:20 AS build
 
+WORKDIR /app
+
+# 🔧 تحسين الشبكة ومنع timeout
+RUN npm config set fetch-retries 5 \
+ && npm config set fetch-retry-mintimeout 20000 \
+ && npm config set fetch-retry-maxtimeout 120000 \
+ && npm config set registry https://registry.npmjs.org/
+
+COPY package*.json ./
+
+RUN npm ci --legacy-peer-deps
+
+COPY . .
+
+RUN npm run build
 ## Development server
 
 To start a local development server, run:
